@@ -113,6 +113,37 @@ const dateDiff = (d1, d2) => {
   return Math.round(diff / (1000 * 60));
 };
 
+/**
+ * Valid owner affiliations for GitHub GraphQL API.
+ */
+const VALID_OWNER_AFFILIATIONS = [
+  "OWNER",
+  "COLLABORATOR",
+  "ORGANIZATION_MEMBER",
+];
+
+/**
+ * Parse owner affiliations from string array.
+ *
+ * @param {string[]} affiliations Array of affiliations to parse.
+ * @returns {string[]} Parsed and validated affiliations. Defaults to ["OWNER"] if empty or invalid.
+ */
+const parseOwnerAffiliations = (affiliations) => {
+  if (
+    !affiliations ||
+    !Array.isArray(affiliations) ||
+    affiliations.length === 0
+  ) {
+    return ["OWNER"];
+  }
+
+  const validAffiliations = affiliations
+    .map((a) => a.toUpperCase().trim())
+    .filter((a) => VALID_OWNER_AFFILIATIONS.includes(a));
+
+  return validAffiliations.length > 0 ? validAffiliations : ["OWNER"];
+};
+
 export {
   parseBoolean,
   parseArray,
@@ -121,4 +152,5 @@ export {
   chunkArray,
   parseEmojis,
   dateDiff,
+  parseOwnerAffiliations,
 };
